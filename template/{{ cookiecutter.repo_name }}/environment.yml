@@ -1,0 +1,9 @@
+name: {{ cookiecutter.project_slug }}
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - prefect<2.0
+  - pip 
+  - pip: 
+    - git@github.com:jacquelinegarrahan/lume-services.git
