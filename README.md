@@ -1,4 +1,4 @@
-# LUME-services model template
+# LUME-services Model Template
 This repository provides a [cookiecutter](https://cookiecutter.readthedocs.io/en/stable/) model template for compatibility with [LUME-services](https://slaclab.github.io/lume-services/) orchestration tooling.
 
 
@@ -18,7 +18,7 @@ This repository provides a [cookiecutter](https://cookiecutter.readthedocs.io/en
     "model_class":"{{ cookiecutter.project_name.title().replace(' ', '').replace('-', '') }}"
 }
 ```
-For repo_name, project_slug, and model class, we here conver the project name into a palatable form, subbing underscores for dashes and spaces. Alternatively, you may hard-code these values.  
+For repo_name, project_slug, and model class, we here convert the project name into a palatable form, subbing underscores for dashes and spaces. Alternatively, you may hard-code these values.  
 
 
 3. Build template (from this repo root)
@@ -34,8 +34,6 @@ The templating workflow also initialized a git repository for your project and c
 3. Edit the code in my_project_name/ to create a model class representative of your workflow
 
 4. Update your flow in my_project_name/flow
-
-
 
 ## Use 
 
@@ -55,9 +53,6 @@ Create a .json file:
 
 
 
-
-
-
 ## Tools
 * conda
 * click for cli dev
@@ -66,3 +61,11 @@ Create a .json file:
 * pytest with coverage
 * Common github actions
 * [pydantic](https://pydantic-docs.helpmanual.io/) for use with data structures
+
+
+### Notes
+Jinja templating and github actions
+
+
+Conda vs pip installation
+- runtime requirement should make an effor to only reference conda-forge distributions
