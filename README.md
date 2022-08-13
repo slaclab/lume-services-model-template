@@ -69,3 +69,6 @@ Jinja templating and github actions
 
 Conda vs pip installation
 - runtime requirement should make an effor to only reference conda-forge distributions
+
+## TODO
+- [ ] Add preprocessing step

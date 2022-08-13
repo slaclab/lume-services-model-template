@@ -1,8 +1,10 @@
 # conda env create -f environment.yml
-name: project-template
+name: lume-services-project-template
 channels:
   - conda-forge
 dependencies:
   - python=3.9
   - cookiecutter
   - versioneer
+  - lume-model
+  - pytablewriter
