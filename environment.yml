@@ -8,3 +8,4 @@ dependencies:
   - versioneer
   - lume-model
   - pytablewriter
+  - gitpython

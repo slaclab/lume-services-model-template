@@ -1,4 +1,4 @@
-name: {{ cookiecutter.project_slug }}
+name: {{ cookiecutter.repo_name }}-dev
 channels:
   - conda-forge
 dependencies:
@@ -10,9 +10,3 @@ dependencies:
   - pre-commit
   - pytest
   - pytest-cov
-
-  # docs
-  - mkdocs
-  - mkdocstrings
-  - mkdocstrings-python
-  - mkdocs-material
