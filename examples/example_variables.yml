@@ -1,38 +1,32 @@
-model:
-    model_class: lume_model.keras.KerasModel
-    requirements:
-      tensorflow: 2.3.1
-    kwargs:
-      model_file: examples/files/iris_model.h5
-    output_format:
-        type: softmax
-
 input_variables:
-    SepalLength:
-        name: SepalLength
-        type: scalar
-        default: 4.3
-        range: [4.3, 7.9]
+  input1:
+      name: input1
+      type: scalar
+      default: 1
+      range: [0, 256]
 
-    SepalWidth:
-        name: SepalWidth
-        type: scalar
-        default: 2.0
-        range: [2.0, 6.9]
-
-    PetalLength:
-        name: PetalLength
-        type: scalar
-        default: 1.0
-        range: [1.0, 6.9]
-
-    PetalWidth:
-        name: PetalWidth
-        type: scalar
-        default: 0.1
-        range: [0.1, 2.5]
+  input2:
+      name: input2
+      type: scalar
+      default: 2.0
+      range: [0, 256]
 
 output_variables:
-    Species:
-        name: Species
-        type: scalar
+  output1:
+    name: output1
+    type: image
+    x_label: "value1"
+    y_label: "value2"
+    axis_units: ["mm", "mm"]
+    x_min: 0
+    x_max: 10
+    y_min: 0
+    y_max: 10
+
+  output2:
+    name: output2
+    type: scalar
+  
+  output3:
+    name: output3
+    type: scalar
