@@ -6,5 +6,6 @@
     "project_name": "My Package", 
     "repo_name": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}", 
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
-    "model_class":"{{ cookiecutter.project_name.title().replace(' ', '').replace('-', '') }}"
+    "model_class":"{{ cookiecutter.project_name.title().replace(' ', '').replace('-', '') }}",
+    "model_config_file": null
 }

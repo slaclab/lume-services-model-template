@@ -1,6 +1,11 @@
 # {{ cookiecutter.project_name }}
 
-This repository packages the `{{ cookiecutter.model_class }}` in `{{ cookiecutter.project_slug }}/model.py ` for execution with [Prefect](https://docs.prefect.io/) using the flow described in `{{ cookiecutter.project_slug }}/flow/flow.py`. 
+This repository packages the `{{ cookiecutter.model_class }}` in `{{ cookiecutter.project_slug }}/model.py ` for execution with [Prefect](https://docs.prefect.io/) using the flow described in `{{ cookiecutter.project_slug }}/flow/flow.py` using the variables:
+
+<!--- The input and output variable tables are replaced when generating the project in template/hooks/post_gen_project.py-->
+<<INPUT_VARIABLES>>
+
+<<OUTPUT_VARIABLES>>
 
 
 ## Installation
