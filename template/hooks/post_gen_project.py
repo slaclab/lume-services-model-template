@@ -116,7 +116,7 @@ lume_model_config_yaml = os.path.abspath("{{ cookiecutter.model_config_file }}")
 # move model config file to files
 if not os.path.isfile(lume_model_config_yaml):
     logger.error("No such file %s", lume_model_config_yaml)
-    raise FileNotFoundError()
+    raise FileNotFoundError(lume_model_config_yaml)
 
 # Add variable file to /files subdir
 yaml_dest =  f"{cwd}/{{ cookiecutter.project_slug }}/files/variables.yml"
