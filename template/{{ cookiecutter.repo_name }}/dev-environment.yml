@@ -4,10 +4,11 @@ channels:
 dependencies:
   - python=3.9
   - click
-  - pydantic
+  - pydantic # until lume-services registered with conda
+  - lume-model=1.4 # until lume-services registered with conda
   - pip 
   - pip: 
-    - git@github.com:jacquelinegarrahan/lume-services.git
+    - git+https://github.com/jacquelinegarrahan/lume-services.git
 
   # dev
   - pre-commit

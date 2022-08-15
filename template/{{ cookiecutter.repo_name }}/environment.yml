@@ -3,7 +3,8 @@ channels:
   - conda-forge
 dependencies:
   - python=3.9
-  - prefect<2.0
+  - prefect<2.0 # until lume-services registered with conda
+  - lume-model=1.4 # until lume-services registered with conda
   - pip 
   - pip: 
-    - git@github.com:jacquelinegarrahan/lume-services.git
+    - git+https://github.com/jacquelinegarrahan/lume-services.git
