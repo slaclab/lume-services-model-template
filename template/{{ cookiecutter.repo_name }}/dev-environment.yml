@@ -5,6 +5,9 @@ dependencies:
   - python=3.9
   - click
   - pydantic
+  - pip 
+  - pip: 
+    - git@github.com:jacquelinegarrahan/lume-services.git
 
   # dev
   - pre-commit
