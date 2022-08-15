@@ -14,12 +14,12 @@ from lume_services.tasks import (
     LoadFile,
     SaveFile,
 )
+from lume_services.files import TextFile
 from lume_model.variables import InputVariable, OutputVariable
 from prefect.storage import Module
 
 from {{ cookiecutter.project_slug }}.model import {{ cookiecutter.model_class }}
 from {{ cookiecutter.project_slug }} import INPUT_VARIABLES
-
 
 
 @task(log_stdout=True)
@@ -212,12 +212,14 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
     # })
 
     # SAVE A FILE WITH SOME FORMATTED DATA
-    # This assumes the output is a text file, but see https://slaclab.github.io/lume-services/api/files/files/
+    # This assumes the output is a text file, but see https://slaclab.github.io/lume-services/api/files/files/ # noqa
     # for custom types. If the formats supported do not suit your needs, you can
     # alternatively subclass File for custom serialization.
     file_data = format_file(output_variables)
+
+    # add "filesystem" and "filesystem_identifier to the flow parameters"
     file_parameters = save_file_task.parameters
-    saved_file_rep = save_file_task(file_data, **file_parameters)
+    saved_file_rep = save_file_task(file_data, file_type=TextFile, **file_parameters)
 
     # SAVE RESULTS TO RESULTS DATABASE, requires
     with case(running_local, False):
