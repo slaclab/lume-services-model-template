@@ -3,10 +3,9 @@ from typing import Dict
 from prefect import Flow, task, case
 from prefect import Parameter
 
-from lume_services.services.scheduling.prefect.results import DBResult
 from lume_services.results import Result
 from lume_services.tasks import (
-    configure_services,
+    configure_lume_services,
     prepare_lume_model_variables,
     check_local_execution,
     SaveDBResult,
@@ -150,15 +149,11 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
 
     # CONFIGURE LUME-SERVICES
     # see https://slaclab.github.io/lume-services/workflows/#configuring-flows-for-use-with-lume-services
-    configure_services()
+    configure_lume_services()
 
     # CHECK WHETHER THE FLOW IS RUNNING LOCALLY
     # If the flow runs using a local backend, the results service will not be available
     running_local = check_local_execution()
-
-    # CONFIGURE LUME-SERVICES
-    # see https://slaclab.github.io/lume-services/workflows/#configuring-flows-for-use-with-lume-services
-    configure_services()
 
     # SET UP INPUT VARIABLE PARAMETERS.
     # These are parameters that can be supplied to the workflow at runtime
