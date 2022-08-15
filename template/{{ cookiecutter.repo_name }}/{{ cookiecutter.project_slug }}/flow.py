@@ -159,7 +159,7 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
     # These are parameters that can be supplied to the workflow at runtime
     input_variable_parameter_dict = {
         var_name: Parameter(var_name, default=var.default)
-        for var, var_name in INPUT_VARIABLES.items()
+        for var_name, var in INPUT_VARIABLES.items()
     }
 
     # ADD MISC OTHER VARIABLES, FOR EXAMPLE IF SAVING A FILE:
@@ -212,11 +212,11 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
     # alternatively subclass File for custom serialization.
     file_data = format_file(output_variables)
 
-    # add "filesystem" and "filesystem_identifier to the flow parameters"
+    # add "filename" and "filesystem_identifier to the flow parameters"
     file_parameters = save_file_task.parameters
     saved_file_rep = save_file_task(file_data, file_type=TextFile, **file_parameters)
 
-    # SAVE RESULTS TO RESULTS DATABASE, requires
+    # SAVE RESULTS TO RESULTS DATABASE, requires LUME-services results backend 
     with case(running_local, False):
         # CREATE LUME-services Result object
         formatted_result = format_result(
