@@ -13,10 +13,6 @@ dev_requirements = []
 with open(path.join(cur_dir, "dev-requirements.txt"), "r") as f:
     dev_requirements = f.read().split()
 
-docs_requirements = []
-with open(path.join(cur_dir), "r") as f:
-    docs_requirements = f.read().split()
-
 setup(
     name="{{ cookiecutter.project_slug }}",
     author="{{ cookiecutter.author }}",
