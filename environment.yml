@@ -9,3 +9,4 @@ dependencies:
   - lume-model
   - pytablewriter
   - gitpython
+  - jupyterlab
