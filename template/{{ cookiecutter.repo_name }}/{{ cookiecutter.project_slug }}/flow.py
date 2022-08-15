@@ -1,5 +1,3 @@
-import copy
-import os 
 from typing import Dict
 
 from prefect import Flow, task, case
@@ -7,7 +5,15 @@ from prefect import Parameter
 
 from lume_services.services.scheduling.prefect.results import DBResult
 from lume_services.results import Result
-from lume_services.tasks import configure_services, prepare_lume_model_variables, check_local_execution, SaveDBResult, LoadDBResult, LoadFile, SaveFile
+from lume_services.tasks import (
+    configure_services,
+    prepare_lume_model_variables,
+    check_local_execution,
+    SaveDBResult,
+    LoadDBResult,
+    LoadFile,
+    SaveFile,
+)
 from lume_model.variables import InputVariable, OutputVariable
 from prefect.storage import Module
 
@@ -18,9 +24,9 @@ from {{ cookiecutter.project_slug }} import INPUT_VARIABLES
 
 @task(log_stdout=True)
 def preprocessing_task(input_variables, misc_settings):
-    """If additional preprocessing of input variables are required, process the 
+    """If additional preprocessing of input variables are required, process the
     variables here. This task is flexible and can absorb other misc settings passed
-    as parameters to the flow. 
+    as parameters to the flow.
 
     Examples:
         Suppose we have a preprocessing step where we want to scale all values by some
@@ -31,11 +37,11 @@ def preprocessing_task(input_variables, misc_settings):
         @task(log_stdout=True)
         def preprocessing_task(input_variables, multiplier):
             for var_name in input_variables.keys():
-                input_variables[var_name].value = input_variables[var_name].value 
+                input_variables[var_name].value = input_variables[var_name].value
                                                         * multiplier
 
         ```
-    
+
     """
     ...
 
@@ -48,7 +54,7 @@ def format_file(output_variables):
     about interacting with file objects and file systems
 
     Examples:
-        Suppose we have a workflow with two results `text1` and `text2`. We'd like to 
+        Suppose we have a workflow with two results `text1` and `text2`. We'd like to
         concatenate the text and save in a text file. This would look like:
         ```python
 
@@ -60,7 +66,7 @@ def format_file(output_variables):
 
         with Flow("my-flow") as flow:
 
-            ... # set up params, evaluate, etc.            
+            ... # set up params, evaluate, etc.
 
             output_variables = evaluate(formatted_input_variables)
             text = format_file(output_variables)
@@ -82,18 +88,20 @@ def format_file(output_variables):
     return obj
 
 
-
 @task(log_stdout=True)
-def format_result(input_variables: Dict[str, InputVariable], output_variables: Dict[str, OutputVariable]):
-    """Formats model results into a LUME-services Result object. This task should be 
+def format_result(
+    input_variables: Dict[str, InputVariable],
+    output_variables: Dict[str, OutputVariable],
+):
+    """Formats model results into a LUME-services Result object. This task should be
     modified for custom organization of outputs.
 
     NOTE: Here we use the generic Result class defined in LUME-services https://slaclab.github.io/lume-services/api/results/
-    Other Result types can be easily configured by subclassing this Result class and 
-    LUME-services pre-packages a result for Impact simulations: https://slaclab.github.io/lume-services/api/results/#lume_services.results.impact 
-    
+    Other Result types can be easily configured by subclassing this Result class and
+    LUME-services pre-packages a result for Impact simulations: https://slaclab.github.io/lume-services/api/results/#lume_services.results.impact
 
-    Args: 
+
+    Args:
         input_variables (Dict[str, InputVariable]): Dictionary mapping input variable
             name to LUME-model variable.
         output_variables (Dict[str, OutputVariable]): Dictionary mapping output variable
@@ -102,15 +110,12 @@ def format_result(input_variables: Dict[str, InputVariable], output_variables: D
     Returns:
         Result: Lume-Services Result object.
 
-    """ # noqa
+    """  # noqa
 
     inputs = {var_name: var.value for var_name, var in input_variables.items()}
     outputs = {var_name: var.value for var_name, var in output_variables.items()}
 
-    return Result(
-        inputs=inputs,
-        outputs=outputs
-    )
+    return Result(inputs=inputs, outputs=outputs)
 
 
 @task(log_stdout=True)
@@ -132,19 +137,16 @@ save_db_result_task = SaveDBResult(timeout=30)
 # See docs: https://slaclab.github.io/lume-services/api/tasks/#lume_services.tasks.file.SaveFile
 save_file_task = SaveFile(timeout=30)
 
-# If your model requires loading a file object, you can use the task pre-packaged 
+# If your model requires loading a file object, you can use the task pre-packaged
 # with LUME-services:
 # load_file_task = LoadFile(timeout=30)
 
 # If your model requires loading a results database entry, you can use the LoadDBResult
-# task packaged with LUME-services: 
+# task packaged with LUME-services:
 # load_db_result_task = LoadDBResult(timeout=10)
 
 
-with Flow(
-        "{{ cookiecutter.repo_name }}",
-        storage=Module(__name__)
-    ) as flow:
+with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
 
     # CONFIGURE LUME-SERVICES
     # see https://slaclab.github.io/lume-services/workflows/#configuring-flows-for-use-with-lume-services
@@ -158,11 +160,11 @@ with Flow(
     # see https://slaclab.github.io/lume-services/workflows/#configuring-flows-for-use-with-lume-services
     configure_services()
 
-
     # SET UP INPUT VARIABLE PARAMETERS.
     # These are parameters that can be supplied to the workflow at runtime
     input_variable_parameter_dict = {
-        var_name: Parameter(var_name, default=var.default) for var, var_name in INPUT_VARIABLES.items()
+        var_name: Parameter(var_name, default=var.default)
+        for var, var_name in INPUT_VARIABLES.items()
     }
 
     # ADD MISC OTHER VARIABLES, FOR EXAMPLE IF SAVING A FILE:
@@ -172,14 +174,14 @@ with Flow(
     # setting_1 = Parameter("setting_1")
     # setting_2 = Parameter("setting_2")
 
-    # If your model requires loading a file object, you can use the LoadFile task 
+    # If your model requires loading a file object, you can use the LoadFile task
     # pre-packaged with LUME-services. The load_file_task is defined in a comment above
     # outside of this flow scope. The task parameters can be conveniently accessed for
     # adding to flow parameters:
     # file_parameters = load_file_task.parameters
     # loaded_obj = load_file_task(**file_parameters)
 
-    # If your model requires loading a result object stored in the database, you can 
+    # If your model requires loading a result object stored in the database, you can
     # use the LoadDBResult task pre-packaged with LUME-services The load_db_result_task
     # is defined in a comment above outside of this flow scope. The task parameters can
     # be conveniently accessed for adding to flow parameters:
@@ -188,13 +190,15 @@ with Flow(
     # To access a sepecific value returned in the db_result, in this case the value of
     # the output variable named "output1":
     # db_result = load_db_result(
-    #                   flow_id=flow_id_of_result_flow, 
-    #                   attribute="outputs", 
+    #                   flow_id=flow_id_of_result_flow,
+    #                   attribute="outputs",
     #                   attribute_index=["output1"]
     # )
 
     # ORGANIZE INPUT VARIABLE VALUES LUME-MODEL VARIABLES
-    formatted_input_variables = prepare_lume_model_variables(**input_variable_parameter_dict, INPUT_VARIABLES)
+    formatted_input_variables = prepare_lume_model_variables(
+        input_variable_parameter_dict, INPUT_VARIABLES
+    )
 
     # If additional preprocessing is necessary, the user can implement a preprocessing task
     # formatted_input_vars = preprocessing_task(formatted_input_vars)
@@ -202,27 +206,28 @@ with Flow(
     # RUN EVALUATION
     output_variables = evaluate(formatted_input_variables)
     # If we had settings we were passing to the model, it would look like:
-    #results = predict(formatted_input_vars, settings={
+    # results = predict(formatted_input_vars, settings={
     #    "setting_1": setting_1,
     #    "setting_2": setting_2
-    #})
+    # })
 
     # SAVE A FILE WITH SOME FORMATTED DATA
     # This assumes the output is a text file, but see https://slaclab.github.io/lume-services/api/files/files/
-    # for custom types. If the formats supported do not suit your needs, you can 
+    # for custom types. If the formats supported do not suit your needs, you can
     # alternatively subclass File for custom serialization.
     file_data = format_file(output_variables)
     file_parameters = save_file_task.parameters
     saved_file_rep = save_file_task(file_data, **file_parameters)
 
-    # SAVE RESULTS TO RESULTS DATABASE, requires 
+    # SAVE RESULTS TO RESULTS DATABASE, requires
     with case(running_local, False):
         # CREATE LUME-services Result object
-        formatted_result = format_result(input_variables=formatted_input_variables ,output_variables=output_variables)
+        formatted_result = format_result(
+            input_variables=formatted_input_variables, output_variables=output_variables
+        )
 
         # RUN DATABASE_SAVE_TASK
         saved_model_rep = save_db_result_task(formatted_result)
-
 
 
 def get_flow():
