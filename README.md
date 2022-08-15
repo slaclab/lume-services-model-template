@@ -26,10 +26,15 @@ Using your GitHub account, create an repository named `my-model` (feel free to s
 
 ## 2: Create project 
 
-Clone `lume-model-services-template`.
-
+Clone `lume-model-services-template` and navigate to repository:
 ```
-cookiecutter template -o DIRECTORY_WHERE_YOU_WANT_TO_CREATE_REPO
+git clone https://github.com/jacquelinegarrahan/lume-services-model-template
+cd lume-services-model-template
+```
+
+Create your project. The `-o` flag indicates the directory where you'd like the resulting repo to be stored. For now, let's create it in the repo root:
+```
+cookiecutter template -o $(pwd)
 ```
 
 Answer the prompts
@@ -53,10 +58,10 @@ model_config_file: /full/path/to/lume-services-model-template/examples/variables
 
 Now, navigate to the directory where you've created your repository:
 ```
-cd DIRECTORY_WHERE_YOU_WANT_TO_CREATE_REPO/my-model
+cd my-model
 ```
 
-## 3. Create a repository on GitHub and configure generated repo to use as origin
+## 3. Configure generated repo to use GitHub repo as the origin:
 
 ```
 git remote add origin git@github.com:{YOUR_GITHUB_USERNAME}/my-project.git
@@ -65,7 +70,7 @@ git push --set-upstream origin main
 
 ## 4. Set up model
 
-Replace ellipses in `my_package/model.py` with:
+Replace ellipses in the `evaluate` method of `my_model/model.py` with:
 ```python
 self.output_variables["output1"].value = numpy.random.uniform(
     input_variables["input1"].value,  # lower dist bound
@@ -148,7 +153,7 @@ def format_file(output_variables):
 
 ```
 
-## 3. Set up development environment
+## 6. Create development environment
 
 Now, create an environment for working with your model package:
 
@@ -162,9 +167,15 @@ Install your package into this environment:
 pip install -e .
 ```
 
-## 4. Run your flow
+## 7. Run your flow
 
 Navigate to the `examples` directory inside the `lume-services-model-template` repository. Open the noteboook `run.ipynb`.
+
+
+```
+jupyter notebook run.ipynb
+```
+
 
 
 
