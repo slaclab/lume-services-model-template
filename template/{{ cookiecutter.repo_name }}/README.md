@@ -24,7 +24,7 @@ conda env create -f environment.yml
 ```
 Activate your environment:
 ```
-conda activate {{ cookiecutter.project_slug }}
+conda activate {{ cookiecutter.repo_name }}
 ```
 Install dev environment:
 ```
@@ -33,7 +33,7 @@ conda env create -f dev-environment.yml
 
 Activate your environment:
 ```
-conda activate {{ cookiecutter.project_slug }}-dev
+conda activate {{ cookiecutter.repo_name }}-dev
 ```
 
 Install package:
