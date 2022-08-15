@@ -1,6 +1,7 @@
 import shutil
 import logging
 import os
+from subprocess import Popen
 
 from pytablewriter import MarkdownTableWriter
 from lume_model.utils import variables_from_yaml
@@ -98,7 +99,7 @@ class LUMEModelVariableProcessor():
             output_variable_table_writer =  MarkdownTableWriter(
                 table_name="output_variables",
                 headers=["variable_name", "type"],
-                value_matrix=[output_var_matrix],
+                value_matrix=output_var_matrix,
             )
 
             output_table = output_variable_table_writer.dumps()
@@ -142,3 +143,15 @@ with open(f'{cwd}/README.md', 'w') as file:
   file.write(filedata)
 
 logger.info("Finished placing input/output tables in README.")
+
+
+# initialize git
+git_proc = Popen(["git", "init", str(cwd)])
+git_proc.wait()
+git_add_proc = Popen(["git", "add", "."])
+git_add_proc.wait()
+git_commit_proc = Popen(["git", "commit", "-a", "-m", "Initial Cookiecutter commit."])
+git_commit_proc.wait()
+
+# versioneer
+versioneer_proc = Popen(["versioneer", "install", str(cwd)])
