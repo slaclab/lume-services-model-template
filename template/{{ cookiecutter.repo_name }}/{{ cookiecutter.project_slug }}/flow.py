@@ -17,28 +17,69 @@ from {{ cookiecutter.project_slug }} import INPUT_VARIABLES
 
 
 @task(log_stdout=True)
-def format_input_vars(**input_variable_parameter_dict):
-    """Assumes input_var_rep is a dict mapping var_name to value. The input variables 
-    have already been instantiated, so here we assign their values.
+def preprocessing_task(input_variables, misc_settings):
+    """If additional preprocessing of input variables are required, process the 
+    variables here. This task is flexible and can absorb other misc settings passed
+    as parameters to the flow. 
+
+    Examples:
+        Suppose we have a preprocessing step where we want to scale all values by some
+        multiplier. This task would look like:
+
+        ```python
+
+        @task(log_stdout=True)
+        def preprocessing_task(input_variables, multiplier):
+            for var_name in input_variables.keys():
+                input_variables[var_name].value = input_variables[var_name].value 
+                                                        * multiplier
+
+        ```
+    
+    """
+    ...
+
+
+@task(log_stdout=True)
+def format_file(output_variables):
+    """Task used for organizing an file object. The formatted object must be
+    serializable by the file_type passed in the SaveFile task call.
+    See https://slaclab.github.io/lume-services/services/files/ for more information
+    about interacting with file objects and file systems
+
+    Examples:
+        Suppose we have a workflow with two results `text1` and `text2`. We'd like to 
+        concatenate the text and save in a text file. This would look like:
+        ```python
+
+        @task(log_stdout=True)
+        def format_file(output_variables):
+            text = output_variables["text1"].value + output_variables["text2"].value
+
+        save_file_task = SaveFile()
+
+        with Flow("my-flow") as flow:
+
+            ... # set up params, evaluate, etc.            
+
+            output_variables = evaluate(formatted_input_variables)
+            text = format_file(output_variables)
+
+            file_parameters = save_file_task.parameters
+
+            # save file
+            my_file = save_file_task(
+                text,
+                filename = file_parameters["filename"],
+                filesystem_identifier = file_parameters["filesystem_identifier"],
+                file_type = TextFile # THIS MUST BE PASSED IN THE TASK CALL
+            )
+
+        ```
 
     """
-    # use deepcopy because model references INPUT_VARIABLES/OUTPUT_VARIABLES
-    input_variables = copy.deepcopy(INPUT_VARIABLES)
-
-    for var_name in INPUT_VARIABLES:
-        input_variables[var_name].value = input_variable_parameter_dict[var_name]
-
-    return input_variables
-
-
-@task(log_stdout=True)
-def preprocessing_task():
-    ...
-
-
-@task(log_stdout=True)
-def format_file(results):
-    ...
+    obj = ...
+    return obj
 
 
 
@@ -170,12 +211,12 @@ with Flow(
     # This assumes the output is a text file, but see https://slaclab.github.io/lume-services/api/files/files/
     # for custom types. If the formats supported do not suit your needs, you can 
     # alternatively subclass File for custom serialization.
-    file_data = format_file(...)
+    file_data = format_file(output_variables)
     file_parameters = save_file_task.parameters
     saved_file_rep = save_file_task(file_data, **file_parameters)
 
-    # SAVE RESULTS TO RESULTS DATABASE
-    with case(running_local, True):
+    # SAVE RESULTS TO RESULTS DATABASE, requires 
+    with case(running_local, False):
         # CREATE LUME-services Result object
         formatted_result = format_result(input_variables=formatted_input_variables ,output_variables=output_variables)
 
