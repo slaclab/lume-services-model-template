@@ -20,7 +20,7 @@ jobs:
           {%-endraw %}
           mamba-version: "*"
           channels: conda-forge
-          activate-environment: {{ cookiecutter.project_slug }}-dev
+          activate-environment: {{ cookiecutter.repo_name }}-dev
           environment-file: dev-environment.yml
 
       - name: Install { cookiecutter.project_slug }}
