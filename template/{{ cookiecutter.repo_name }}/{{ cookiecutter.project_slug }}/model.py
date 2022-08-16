@@ -18,7 +18,7 @@ class {{ cookiecutter.model_class }}(BaseModel):
         data files, etc.
         
         """
-        super(self).__init__()
+        super().__init__()
 
         # handle settings if any
         # if settings_kwargs is not None:

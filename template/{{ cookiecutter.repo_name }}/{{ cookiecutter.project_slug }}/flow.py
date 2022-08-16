@@ -125,7 +125,7 @@ def evaluate(formatted_input_vars, settings=None):
 
     model = {{ cookiecutter.model_class }}(**settings)
 
-    return model.execute(formatted_input_vars)
+    return model.evaluate(formatted_input_vars)
 
 
 # DEFINE TASK FOR SAVING DB RESULT
@@ -149,7 +149,7 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
 
     # CONFIGURE LUME-SERVICES
     # see https://slaclab.github.io/lume-services/workflows/#configuring-flows-for-use-with-lume-services
-    configure_lume_services()
+    configure = configure_lume_services()
 
     # CHECK WHETHER THE FLOW IS RUNNING LOCALLY
     # If the flow runs using a local backend, the results service will not be available
@@ -161,9 +161,6 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
         var_name: Parameter(var_name, default=var.default)
         for var_name, var in INPUT_VARIABLES.items()
     }
-
-    # ADD MISC OTHER VARIABLES, FOR EXAMPLE IF SAVING A FILE:
-    output_filename = Parameter("filename")
 
     # additional settings may be organized as parameters
     # setting_1 = Parameter("setting_1")
@@ -212,9 +209,21 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
     # alternatively subclass File for custom serialization.
     file_data = format_file(output_variables)
 
+
+    # MARK CONFIGURATION OF LUME_SERVICES AS AN UPSTREAM TASK
+    # tasks using backend services like filesystem and results db must mark configure
+    # as an upstream task
+
     # add "filename" and "filesystem_identifier to the flow parameters"
     file_parameters = save_file_task.parameters
     saved_file_rep = save_file_task(file_data, file_type=TextFile, **file_parameters)
+
+
+    # MARK CONFIGURATION OF LUME_SERVICES AS AN UPSTREAM TASK
+    # tasks using backend services like filesystem and results db must mark configure
+    # as an upstream task
+    saved_file_rep.set_upstream(configure)
+
 
     # SAVE RESULTS TO RESULTS DATABASE, requires LUME-services results backend 
     with case(running_local, False):
@@ -225,6 +234,7 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
 
         # RUN DATABASE_SAVE_TASK
         saved_model_rep = save_db_result_task(formatted_result)
+        saved_model_rep.set_upstream(configure)
 
 
 def get_flow():
