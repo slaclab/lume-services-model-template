@@ -63,6 +63,7 @@ cd my-model
 
 ## 3. Configure generated repo to use GitHub repo as the origin:
 
+Replace username and brackets in the below command:
 ```
 git remote add origin git@github.com:{YOUR_GITHUB_USERNAME}/my-project.git
 git push --set-upstream origin main
@@ -148,7 +149,7 @@ In order for our flow to run, we must edit the code in `my_model/flow.py`. First
 
 @task(log_stdout=True)
 def format_file(output_variables):
-    text = str(output_variables["output2"] + output_variables["output3"])
+    text = str(output_variables["output2"].value + output_variables["output3"].value)
     return text
 
 ```
@@ -177,6 +178,31 @@ jupyter notebook run.ipynb
 ```
 
 
+## 8. Set up tests
+
+In `my_model/tests/test_flow.py` modify the `test_flow_execution` function, adding the `tmp_path` fixture to the signature and passing `filename=f"{tmp_dir}/test_file.txt"` and `filesytem_identifier="local"` to the run method. The resulting code should look like:
+
+```python
+def test_flow_execution(tmp_path):
+    flow.run(filename=f"{tmp_path}/test_file.txt", filesystem_identifier="local")
+```
+
+Navigate back to your `my-model` directory. You can now test your flow locally by running:
+```
+pytest . 
+```
+
+## 9. Run tests with GitHub actions
+
+Check in all of your code, and push to GitHub.
+
+```
+git add .
+git commit -m "Check in formatted repo"
+git push
+```
+
+In your browser, navigate to your GitHub repository at https://github.com/{YOUR_GITHUB_USERNAME}/my-model/actions, replacing username and brackets with your github username. The testing workflow configured in `.github/workflows/tests.yml` will run automatically on pushes to your main branch and you can monitor the success of these tests from the GitHub actions console for the repo. The workflow tests your package against a matrix of Python versions (3.7, 3.8, 3.9) on the latest Ubuntu build. You can expand this matrix if desired using [GitHub actions matrix options](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs).
 
 
 ### Notes
