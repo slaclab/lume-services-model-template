@@ -12,7 +12,7 @@ This repository provides a [cookiecutter](https://cookiecutter.readthedocs.io/en
 * [pydantic](https://pydantic-docs.helpmanual.io/) for use with data structures
 
 ## Demo
-@[:markdown](https://raw.githubusercontent.com/jacquelinegarrahan/lume-services/main/docs/demo.md)
+[Demo](https://raw.githubusercontent.com/jacquelinegarrahan/lume-services/main/docs/demo.md)
 
 ### Notes
  - Jinja templating and github actions
