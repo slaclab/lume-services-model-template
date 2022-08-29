@@ -2,12 +2,10 @@ name: {{ cookiecutter.repo_name }}-dev
 channels:
   - conda-forge
 dependencies:
-  - python=3.9
   - click
   - pydantic # until lume-services registered with conda
-  - lume-model=1.4 # until lume-services registered with conda
-  - prefect<2.0
-  - prefect[viz]=1.3
+  - lume-model>=1.4 # until lume-services registered with conda
+  - prefect[viz]<2.0
   - pip 
   - pip: 
     - git+https://github.com/jacquelinegarrahan/lume-services.git
