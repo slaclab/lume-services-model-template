@@ -23,8 +23,11 @@ jobs:
     - name: Upload artifact to release
       uses: svenstaro/upload-release-action@v2
       with:
+        {% raw -%}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ${{ steps.sdist.outputs.filename }}
         tag: ${{ github.ref }}
+        {%-endraw %}
+      
         overwrite: true
         file_glob: true
