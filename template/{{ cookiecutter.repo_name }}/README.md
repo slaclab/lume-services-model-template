@@ -24,7 +24,7 @@ conda env create -f environment.yml
 ```
 Activate your environment:
 ```
-conda activate {{ cookiecutter.repo_name }}
+conda activate {{ cookiecutter.project_name }}
 ```
 Install dev environment:
 ```
@@ -33,7 +33,7 @@ conda env create -f dev-environment.yml
 
 Activate your environment:
 ```
-conda activate {{ cookiecutter.repo_name }}-dev
+conda activate {{ cookiecutter.project_name }}-dev
 ```
 
 Install package:
@@ -56,7 +56,7 @@ This README was automatically generated using the template defined in https://gi
     "github_username": "{{ cookiecutter.github_username }}",
     "github_url": "{{ cookiecutter.github_url }}",
     "project_name": "{{ cookiecutter.project_name }}", 
-    "repo_name": "{{ cookiecutter.repo_name }}", 
+    "project_name": "{{ cookiecutter.project_name }}", 
     "project_slug": "{{ cookiecutter.project_slug }}",
     "model_class": "{{ cookiecutter.model_class }}"
 }
