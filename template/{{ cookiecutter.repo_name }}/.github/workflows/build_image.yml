@@ -10,7 +10,7 @@ jobs:
     name: Build and Push to DockerHub
     runs-on: ubuntu-latest
     env:
-      REPO: {{ cookiecutter.project_name }}
+      REPO: {{ cookiecutter.project_slug }}
 
     steps:
       - name: Check out the repo

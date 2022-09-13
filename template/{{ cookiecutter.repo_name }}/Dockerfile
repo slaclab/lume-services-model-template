@@ -4,13 +4,13 @@ FROM condaforge/mambaforge AS build
 ARG VERSION
 ENV version=$VERSION
 
-COPY environment.yml /${{ cookiecutter.project_name }}/environment.yml
+COPY environment.yml /${{ cookiecutter.project_slug }}/environment.yml
 
 RUN conda install -c conda-forge conda-pack && \
-  conda env create -f /${{ cookiecutter.project_name }}/environment.yml
+  conda env create -f /${{ cookiecutter.project_slug }}/environment.yml
 
 # Use conda-pack to create a  enviornment in /venv:
-RUN conda-pack -n ${{ cookiecutter.project_name }} -o /tmp/env.tar && \
+RUN conda-pack -n ${{ cookiecutter.project_slug }} -o /tmp/env.tar && \
   mkdir /venv && cd /venv && tar xf /tmp/env.tar && \
   rm /tmp/env.tar
 
@@ -22,7 +22,7 @@ FROM debian:buster AS runtime
 
 # Copy /venv from the previous stage:
 COPY --from=build /venv /venv
-COPY . /${{ cookiecutter.project_name }}
+COPY . /${{ cookiecutter.project_slug }}
 
 COPY _entrypoint.sh /usr/local/bin/_entrypoint.sh
 COPY ${{ cookiecutter.package }}/flow.py /opt/prefect/flow.py
@@ -31,7 +31,7 @@ RUN chmod +x /usr/local/bin/_entrypoint.sh
 RUN mkdir /opt/prefect
 
 RUN source /venv/bin/activate && \
-  python -m pip install /${{ cookiecutter.project_name }}
+  python -m pip install /${{ cookiecutter.project_slug }}
 
 # When image is run, run the code with the environment
 # activated:
