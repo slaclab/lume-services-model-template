@@ -120,7 +120,7 @@ if not os.path.isfile(lume_model_config_yaml):
     raise FileNotFoundError(lume_model_config_yaml)
 
 # Add variable file to /files subdir
-yaml_dest =  f"{cwd}/{{ cookiecutter.project_slug }}/files/variables.yml"
+yaml_dest =  f"{cwd}/{{ cookiecutter.package }}/files/variables.yml"
 shutil.copy(lume_model_config_yaml, yaml_dest)
 
 

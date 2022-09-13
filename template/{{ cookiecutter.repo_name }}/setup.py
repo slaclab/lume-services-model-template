@@ -9,7 +9,7 @@ with open(path.join(cur_dir, "requirements.txt"), "r") as f:
     requirements = f.read().split()
 
 setup(
-    name="{{ cookiecutter.project_slug }}",
+    name="{{ cookiecutter.package }}",
     author="{{ cookiecutter.author }}",
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
@@ -21,10 +21,10 @@ setup(
     python_requires=">=3.8",
     entry_points={
         "orchestration": [
-            "{{ cookiecutter.project_slug }}.model=\
-                {{ cookiecutter.project_slug }}.model:{{ cookiecutter.model_class }}",
-            "{{ cookiecutter.project_slug }}.flow=\
-                {{ cookiecutter.project_slug }}.flow:flow",
+            "{{ cookiecutter.package }}.model=\
+                {{ cookiecutter.package }}.model:{{ cookiecutter.model_class }}",
+            "{{ cookiecutter.package }}.flow=\
+                {{ cookiecutter.package }}.flow:flow",
         ]
     },
 )
