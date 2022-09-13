@@ -1,0 +1,39 @@
+name: Build Container Image
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  push_to_registry:
+    name: Build and Push to DockerHub
+    runs-on: ubuntu-latest
+    env:
+      REPO: {{ cookiecutter.project_name }}
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          {% raw -%}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          {%-endraw %}
+
+      - name: Copy environment file
+        run: |
+          cp environment.yml ./{{ cookiecutter.project_slug }}/flow/environment.yml
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          {% raw -%}
+          context: ./${{ env.REPO }}/flow
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.REPO }}:${{ github.ref_name }},${{ secrets.DOCKER_USERNAME }}/${{ env.REPO }}:latest
+          build-args: |
+            VERSION=${{ github.ref_name }}
+          {%-endraw %}

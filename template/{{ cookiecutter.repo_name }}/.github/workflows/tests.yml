@@ -20,7 +20,7 @@ jobs:
           python-version: 3.9 # this is pinned in dev-environment file
           mamba-version: "*"
           channels: conda-forge
-          activate-environment: {{ cookiecutter.repo_name }}-dev
+          activate-environment: {{ cookiecutter.project_name }}-dev
           environment-file: dev-environment.yml
       
       - name: Install matrix python
