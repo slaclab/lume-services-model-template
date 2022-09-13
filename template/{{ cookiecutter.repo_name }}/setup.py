@@ -24,10 +24,7 @@ setup(
             "{{ cookiecutter.project_slug }}.model=\
                 {{ cookiecutter.project_slug }}.model:{{ cookiecutter.model_class }}",
             "{{ cookiecutter.project_slug }}.flow=\
-                {{ cookiecutter.project_slug }}.flow:get_flow",
-        ],
-        "console_scripts": [
-            "plot-flow={{ cookiecutter.project_slug }}.scripts.plot:main"
-        ],
+                {{ cookiecutter.project_slug }}.flow:flow",
+        ]
     },
 )
