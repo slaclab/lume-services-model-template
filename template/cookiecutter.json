@@ -7,5 +7,7 @@
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}", 
     "package": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
     "model_class":"{{ cookiecutter.project_name.title().replace(' ', '').replace('-', '') }}",
+    "container_registry": ["DockerHub", "Stanford Container Registry"],
+    "container_username": null,
     "model_config_file": null
 }
