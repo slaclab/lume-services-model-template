@@ -1,4 +1,4 @@
-name: {{ cookiecutter.project_name }}-dev
+name: {{ cookiecutter.project_slug }}-dev
 channels:
   - conda-forge
 dependencies:

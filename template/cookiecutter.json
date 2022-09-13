@@ -4,7 +4,7 @@
     "github_username": null,
     "github_url": null,
     "project_name": null, 
-    "repo_name": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}", 
+    "project_name": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}", 
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
     "model_class":"{{ cookiecutter.project_name.title().replace(' ', '').replace('-', '') }}",
     "model_config_file": null

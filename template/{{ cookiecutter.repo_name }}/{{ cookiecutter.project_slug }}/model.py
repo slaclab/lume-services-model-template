@@ -3,7 +3,7 @@ from typing import Dict
 from lume_model.models import BaseModel
 from lume_model.variables import InputVariable, OutputVariable
 
-from {{ cookiecutter.project_slug }} import INPUT_VARIABLES, OUTPUT_VARIABLES
+from {{ cookiecutter.package }} import INPUT_VARIABLES, OUTPUT_VARIABLES
 
 
 

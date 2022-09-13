@@ -17,8 +17,8 @@ from lume_services.files import TextFile
 from lume_model.variables import InputVariable, OutputVariable
 from prefect.storage import Module
 
-from {{ cookiecutter.project_slug }}.model import {{ cookiecutter.model_class }}
-from {{ cookiecutter.project_slug }} import INPUT_VARIABLES
+from {{ cookiecutter.package }}.model import {{ cookiecutter.model_class }}
+from {{ cookiecutter.package }} import INPUT_VARIABLES
 
 
 @task(log_stdout=True)
@@ -145,7 +145,7 @@ save_file_task = SaveFile(timeout=30)
 # load_db_result_task = LoadDBResult(timeout=10)
 
 
-with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
+with Flow("{{ cookiecutter.project_slug }}", storage=Module(__name__)) as flow:
 
     # CONFIGURE LUME-SERVICES
     # see https://slaclab.github.io/lume-services/workflows/#configuring-flows-for-use-with-lume-services

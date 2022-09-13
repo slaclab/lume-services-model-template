@@ -1,6 +1,6 @@
 # {{ cookiecutter.project_name }}
 
-This repository packages the `{{ cookiecutter.model_class }}` in `{{ cookiecutter.project_slug }}/model.py ` for execution with [Prefect](https://docs.prefect.io/) using the flow described in `{{ cookiecutter.project_slug }}/flow/flow.py` using the variables:
+This repository packages the `{{ cookiecutter.model_class }}` in `{{ cookiecutter.package }}/model.py ` for execution with [Prefect](https://docs.prefect.io/) using the flow described in `{{ cookiecutter.package }}/flow/flow.py` using the variables:
 
 <!--- The input and output variable tables are replaced when generating the project in template/hooks/post_gen_project.py-->
 <<INPUT_VARIABLES>>
@@ -24,7 +24,7 @@ conda env create -f environment.yml
 ```
 Activate your environment:
 ```
-conda activate {{ cookiecutter.project_name }}
+conda activate {{ cookiecutter.project_slug }}
 ```
 Install dev environment:
 ```
@@ -33,7 +33,7 @@ conda env create -f dev-environment.yml
 
 Activate your environment:
 ```
-conda activate {{ cookiecutter.project_name }}-dev
+conda activate {{ cookiecutter.project_slug }}-dev
 ```
 
 Install package:
@@ -56,8 +56,8 @@ This README was automatically generated using the template defined in https://gi
     "github_username": "{{ cookiecutter.github_username }}",
     "github_url": "{{ cookiecutter.github_url }}",
     "project_name": "{{ cookiecutter.project_name }}", 
-    "project_name": "{{ cookiecutter.project_name }}", 
-    "project_slug": "{{ cookiecutter.project_slug }}",
+    "project_slug": "{{ cookiecutter.project_slug }}", 
+    "package": "{{ cookiecutter.package }}",
     "model_class": "{{ cookiecutter.model_class }}"
 }
 ```

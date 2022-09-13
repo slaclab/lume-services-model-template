@@ -31,7 +31,7 @@ jobs:
         {%-endraw %}
         
 
-      - name: Install {{ cookiecutter.project_slug }}
+      - name: Install {{ cookiecutter.package }}
         shell: bash -l {0}
         run: |
           pip install -e .
@@ -41,7 +41,7 @@ jobs:
       - name: Run Tests
         shell: bash -l {0}
         run: |
-          pytest --cov-report term --cov={{ cookiecutter.project_slug }} --junitxml=./coverage/pytest.xml | tee ./coverage/pytest-coverage.txt
+          pytest --cov-report term --cov={{ cookiecutter.package }} --junitxml=./coverage/pytest.xml | tee ./coverage/pytest-coverage.txt
 
       - name: store coverage files
         if: always()

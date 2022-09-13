@@ -25,7 +25,7 @@ COPY --from=build /venv /venv
 COPY . /${{ cookiecutter.project_name }}
 
 COPY _entrypoint.sh /usr/local/bin/_entrypoint.sh
-COPY ${{ cookiecutter.project_slug }}/flow.py /opt/prefect/flow.py
+COPY ${{ cookiecutter.package }}/flow.py /opt/prefect/flow.py
 
 RUN chmod +x /usr/local/bin/_entrypoint.sh
 RUN mkdir /opt/prefect

@@ -1,4 +1,4 @@
-from {{ cookiecutter.project_slug }}.flow import flow
+from {{ cookiecutter.package }}.flow import flow
 
 
 def test_flow_execution():
