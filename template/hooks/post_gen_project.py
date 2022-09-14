@@ -147,7 +147,7 @@ logger.info("Finished placing input/output tables in README.")
 # versioneer
 print("here")
 print(cwd)
-versioneer_proc = Popen(["versioneer", "install", "--vendor", str(cwd)])
+versioneer_proc = Popen(["versioneer", "install", "--vendor"])
 versioneer_proc.wait()
 
 # initialize git
