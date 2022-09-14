@@ -7,7 +7,7 @@ ENV version=$VERSION
 COPY environment.yml /{{ cookiecutter.project_slug }}/environment.yml
 
 RUN conda install -c conda-forge conda-pack && \
-  conda env create -f /${{ cookiecutter.project_slug }}/environment.yml
+  conda env create -f /{{ cookiecutter.project_slug }}/environment.yml
 
 # Use conda-pack to create a  enviornment in /venv:
 RUN conda-pack -n {{ cookiecutter.project_slug }} -o /tmp/env.tar && \
@@ -22,7 +22,7 @@ FROM debian:buster AS runtime
 
 # Copy /venv from the previous stage:
 COPY --from=build /venv /venv
-COPY . /${{ cookiecutter.project_slug }}
+COPY . /{{ cookiecutter.project_slug }}
 
 COPY _entrypoint.sh /usr/local/bin/_entrypoint.sh
 COPY {{ cookiecutter.package }}/flow.py /opt/prefect/flow.py
