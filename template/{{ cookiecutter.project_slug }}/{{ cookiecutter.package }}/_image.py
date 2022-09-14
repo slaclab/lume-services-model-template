@@ -8,5 +8,4 @@ IMAGE = f"scr.svc.stanford.edu/{{ cookiecutter.registry_username }}/{{ cookiecut
 
 IMAGE = f"registry.hub.docker.com/{{ cookiecutter.registry_username }}/{{ cookiecutter.project_slug }}:{__version__}"
 
-
 {% endif %}
