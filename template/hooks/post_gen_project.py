@@ -144,6 +144,11 @@ with open(f'{cwd}/README.md', 'w') as file:
 
 logger.info("Finished placing input/output tables in README.")
 
+# versioneer
+print("here")
+print(cwd)
+versioneer_proc = Popen(["versioneer", "install", "--vendor", str(cwd)])
+versioneer_proc.wait()
 
 # initialize git
 git_proc = Popen(["git", "init", str(cwd)])
@@ -152,6 +157,3 @@ git_add_proc = Popen(["git", "add", "."])
 git_add_proc.wait()
 git_commit_proc = Popen(["git", "commit", "-a", "-m", "Initial Cookiecutter commit."])
 git_commit_proc.wait()
-
-# versioneer
-versioneer_proc = Popen(["versioneer", "install", str(cwd)])
