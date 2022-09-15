@@ -28,7 +28,6 @@ COPY _entrypoint.sh /usr/local/bin/_entrypoint.sh
 COPY {{ cookiecutter.package }}/flow.py /opt/prefect/flow.py
 
 RUN chmod +x /usr/local/bin/_entrypoint.sh
-RUN mkdir /opt/prefect
 
 RUN source /venv/bin/activate && \
   python -m pip install /{{ cookiecutter.project_slug }}
