@@ -27,6 +27,7 @@ COPY . /{{ cookiecutter.project_slug }}
 COPY _entrypoint.sh /usr/local/bin/_entrypoint.sh
 COPY {{ cookiecutter.package }}/flow.py /opt/prefect/flow.py
 
+SHELL ["/bin/bash", "-c"] 
 RUN chmod +x /usr/local/bin/_entrypoint.sh
 
 RUN source /venv/bin/activate && \
