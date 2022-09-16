@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.8, 3.9, 3.10]
     steps:
       - uses: actions/checkout@v3
 
       - uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: 3.9 # this is pinned in dev-environment file
+          python-version: ${{ matrix.python-version }}
           mamba-version: "*"
           channels: conda-forge
           activate-environment: {{ cookiecutter.project_slug }}-dev
