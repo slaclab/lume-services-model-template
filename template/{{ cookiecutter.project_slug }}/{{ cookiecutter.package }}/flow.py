@@ -60,6 +60,7 @@ def format_file(output_variables):
         @task(log_stdout=True)
         def format_file(output_variables):
             text = output_variables["text1"].value + output_variables["text2"].value
+            return text
 
         save_file_task = SaveFile()
 
