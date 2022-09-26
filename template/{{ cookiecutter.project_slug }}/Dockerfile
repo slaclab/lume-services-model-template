@@ -1,9 +1,5 @@
 FROM condaforge/mambaforge AS build
 
-# provide version from Docker build args
-ARG VERSION
-ENV version=$VERSION
-
 COPY environment.yml /{{ cookiecutter.project_slug }}/environment.yml
 
 RUN conda install -c conda-forge conda-pack && \
@@ -14,20 +10,27 @@ RUN conda-pack -n {{ cookiecutter.project_slug }} -o /tmp/env.tar && \
   mkdir /venv && cd /venv && tar xf /tmp/env.tar && \
   rm /tmp/env.tar
 
-# Fix paths, will be same in final image so this is fine
-RUN /venv/bin/conda-unpack
-
 # No longer need conda, just the packed python
 FROM debian:buster AS runtime
+
+# provide version from Docker build args
+ARG VERSION
+ENV version=$VERSION
+
+ENV PATH="${PATH}:/venv/bin"
 
 # Copy /venv from the previous stage:
 COPY --from=build /venv /venv
 COPY . /{{ cookiecutter.project_slug }}
 
+SHELL ["/bin/bash", "-c"] 
+# Fix paths, will be same in final image so this is fine
+RUN source /venv/bin/activate && \
+    /venv/bin/conda-unpack
+
 COPY _entrypoint.sh /usr/local/bin/_entrypoint.sh
 COPY {{ cookiecutter.package }}/flow.py /opt/prefect/flow.py
 
-SHELL ["/bin/bash", "-c"] 
 RUN chmod +x /usr/local/bin/_entrypoint.sh
 
 RUN source /venv/bin/activate && \
