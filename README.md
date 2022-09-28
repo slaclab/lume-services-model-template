@@ -6,7 +6,6 @@ This repository provides a [cookiecutter](https://cookiecutter.readthedocs.io/en
 * conda
 * click for cli dev
 * versioneer (cookiecutter runs install during post-installation hook)
-* [pre-commit](https://pre-commit.com/) hook with black and flake8
 * pytest with coverage
 * Common github actions
 * [pydantic](https://pydantic-docs.helpmanual.io/) for use with data structures
@@ -15,9 +14,9 @@ This repository provides a [cookiecutter](https://cookiecutter.readthedocs.io/en
 [Demo](https://raw.githubusercontent.com/jacquelinegarrahan/lume-services/main/docs/demo.md)
 
 ### Notes
- - Jinja templating and github actions
+ - Jinja templating with GitHub actions requires raw blurbs
 
 Conda vs pip installation
-- runtime requirement should make an effor to only reference conda-forge distributions
+- runtime requirement should make an effor to only reference conda-forge distributions and include requirements as conda distributions for those necessarily installed with pip
 
 
