@@ -1,0 +1,17 @@
+name: {{ cookiecutter.project_slug }}-dev
+channels:
+  - conda-forge
+dependencies:
+  - click
+  - pydantic # until lume-services registered with conda
+  - lume-model>=1.4 # until lume-services registered with conda
+  - prefect[viz]<2.0
+  - pip 
+  - pip: 
+    - git+https://github.com/slaclab/lume-services.git@v0.1
+
+  # dev
+  - pre-commit
+  - pytest
+  - pytest-cov
+  - jupyterlab

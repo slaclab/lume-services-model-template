@@ -1,0 +1,9 @@
+name: {{ cookiecutter.project_slug }}
+channels:
+  - conda-forge
+dependencies:
+  - prefect<2.0 # until lume-services registered with conda
+  - lume-model>=1.4 # until lume-services registered with conda
+  - pip 
+  - pip: 
+    - git+https://github.com/slaclab/lume-services.git@v0.1
