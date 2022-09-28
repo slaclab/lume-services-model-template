@@ -8,7 +8,7 @@ dependencies:
   - prefect[viz]<2.0
   - pip 
   - pip: 
-    - git+https://github.com/jacquelinegarrahan/lume-services.git
+    - git+https://github.com/slaclab/lume-services.git@v0.1
 
   # dev
   - pre-commit
