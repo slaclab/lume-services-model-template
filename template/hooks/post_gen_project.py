@@ -11,6 +11,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+logger.basicConfig(logging.INFO)
 
 def get_var_type(variable: Variable):
 
@@ -157,4 +158,10 @@ git_commit_proc.wait()
 versioneer_proc = Popen(["versioneer", "install", "--vendor"])
 versioneer_proc.wait()
 logger.info("Versioneer installed.")
+
+git_add_proc = Popen(["git", "add", "."])
+git_add_proc.wait()
+git_commit_proc = Popen(["git", "commit", "-a", "-m", "Install versioneer."])
+git_commit_proc.wait()
+
 logger.info("Complete.")
