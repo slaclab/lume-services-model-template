@@ -21,7 +21,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           mamba-version: "*"
           channels: conda-forge
-          activate-environment: {{ cookiecutter.project_slug }}-dev
+          activate-environment: {{ cookiecutter.repo_name }}-dev
           environment-file: dev-environment.yml
           {%-endraw %}
       

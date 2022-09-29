@@ -11,7 +11,7 @@ jobs:
     name: Build and Push to DockerHub
     runs-on: ubuntu-latest
     env:
-      REPO: {{ cookiecutter.project_slug }}
+      REPO: {{ cookiecutter.repo_name }}
 
     steps:
       - name: Check out the repo
@@ -48,7 +48,7 @@ jobs:
     name: Build and Push to SCR
     runs-on: ubuntu-latest
     env:
-      REPO: {{ cookiecutter.project_slug }}
+      REPO: {{ cookiecutter.repo_name }}
       
     steps:
       - name: Check out the repo
