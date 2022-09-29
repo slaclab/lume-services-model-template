@@ -21,9 +21,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
           mamba-version: "*"
           channels: conda-forge
+          {%-endraw %}
           activate-environment: {{ cookiecutter.repo_name }}-dev
           environment-file: dev-environment.yml
-          {%-endraw %}
       
       - name: Install matrix python
         shell: bash -l {0}
