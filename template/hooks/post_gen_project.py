@@ -11,7 +11,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-logger.basicConfig(logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 def get_var_type(variable: Variable):
 
