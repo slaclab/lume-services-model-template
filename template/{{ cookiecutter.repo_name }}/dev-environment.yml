@@ -5,6 +5,7 @@ dependencies:
   - click
   - pydantic # until lume-services registered with conda
   - lume-model>=1.4 # until lume-services registered with conda
+  - graphviz
   - prefect[viz]<2.0
   - pip 
   - pip: 
