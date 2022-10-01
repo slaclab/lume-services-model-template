@@ -10,3 +10,4 @@ dependencies:
   - pytablewriter
   - gitpython
   - jupyterlab
+  - tree
