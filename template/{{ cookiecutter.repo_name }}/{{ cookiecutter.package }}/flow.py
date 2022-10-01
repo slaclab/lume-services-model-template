@@ -42,7 +42,7 @@ def preprocessing_task(input_variables, misc_settings):
         ```
 
     """
-    ...
+    raise NotImplementedError("Called not implemented preprocessing_task in flow.")
 
 
 @task(log_stdout=True)
@@ -84,8 +84,7 @@ def format_file(output_variables):
         ```
 
     """
-    obj = ...
-    return obj
+    raise NotImplementedError("Called not implemented format_file in flow.")
 
 
 @task(log_stdout=True)
@@ -137,7 +136,7 @@ save_db_result_task = SaveDBResult(timeout=30)
 # See docs: https://slaclab.github.io/lume-services/api/tasks/#lume_services.tasks.file.SaveFile
 save_file_task = SaveFile(timeout=30)
 
-# If your model requires loading a file object, you can use the task pre-packaged
+# If your model requires loading a file object, you use the task pre-packaged
 # with LUME-services:
 # load_file_task = LoadFile(timeout=30)
 
