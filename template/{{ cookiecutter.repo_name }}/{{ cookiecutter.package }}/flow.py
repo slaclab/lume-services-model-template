@@ -198,7 +198,7 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
     # RUN EVALUATION
     output_variables = evaluate(formatted_input_variables)
     # If we had settings we were passing to the model, it would look like:
-    # results = predict(formatted_input_vars, settings={
+    # results = evaluate(formatted_input_vars, settings={
     #    "setting_1": setting_1,
     #    "setting_2": setting_2
     # })
