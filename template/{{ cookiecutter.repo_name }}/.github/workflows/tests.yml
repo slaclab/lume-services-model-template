@@ -19,9 +19,9 @@ jobs:
         with:
           {% raw -%}
           python-version: ${{ matrix.python-version }}
+          {%-endraw %}
           mamba-version: "*"
           channels: conda-forge
-          {%-endraw %}
           activate-environment: {{ cookiecutter.repo_name }}-dev
           environment-file: dev-environment.yml
       
@@ -51,3 +51,4 @@ jobs:
         with:
           name: coverage
           path: coverage
+  

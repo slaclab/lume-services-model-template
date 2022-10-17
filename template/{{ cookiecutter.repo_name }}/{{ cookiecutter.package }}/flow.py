@@ -154,6 +154,7 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
     # CHECK WHETHER THE FLOW IS RUNNING LOCALLY
     # If the flow runs using a local backend, the results service will not be available
     running_local = check_local_execution()
+    running_local.set_upstream(configure)
 
     # SET UP INPUT VARIABLE PARAMETERS.
     # These are parameters that can be supplied to the workflow at runtime
@@ -198,7 +199,7 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
     # RUN EVALUATION
     output_variables = evaluate(formatted_input_variables)
     # If we had settings we were passing to the model, it would look like:
-    # results = predict(formatted_input_vars, settings={
+    # results = evaluate(formatted_input_vars, settings={
     #    "setting_1": setting_1,
     #    "setting_2": setting_2
     # })
