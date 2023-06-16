@@ -6,7 +6,7 @@ def test_flow_execution():
     flow.set_reference_tasks([output_variables])
 
     # Running without passing parameters require defaults for all parameters
-    flow.run()
+    flow_run = flow.run()
 
     # check success of flow
     assert flow_run.is_successful()
