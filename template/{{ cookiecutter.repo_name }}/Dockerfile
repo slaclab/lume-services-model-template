@@ -2,8 +2,11 @@ FROM condaforge/mambaforge AS build
 
 COPY environment.yml /{{ cookiecutter.repo_name }}/environment.yml
 
-RUN conda install -c conda-forge conda-pack && \
-  conda env create -f /{{ cookiecutter.repo_name }}/environment.yml
+RUN apt-get update && \
+    apt-get install -y gcc git build-essential
+
+RUN mamba install -c conda-forge conda-pack && \
+  mamba env create -f /{{ cookiecutter.repo_name }}/environment.yml
 
 # Use conda-pack to create a  enviornment in /venv:
 RUN conda-pack -n {{ cookiecutter.repo_name }} -o /tmp/env.tar && \
