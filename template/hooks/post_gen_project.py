@@ -5,7 +5,7 @@ from subprocess import Popen
 
 from pytablewriter import MarkdownTableWriter
 from lume_model.utils import variables_from_yaml
-from lume_model.variables import Variable, ArrayVariable, TableVariable, ScalarVariable, ImageVariable
+from lume_model.variables import Variable, ScalarVariable
 import logging
 
 
@@ -16,17 +16,18 @@ logging.basicConfig(level=logging.INFO)
 def get_var_type(variable: Variable):
 
     type_str = None
-    if isinstance(variable, (ArrayVariable,)):
-        type_str = "array"
-
-    elif isinstance(variable, (ScalarVariable,)):
+    if isinstance(variable, (ScalarVariable,)):
         type_str = "scalar"
 
-    elif isinstance(variable, (ImageVariable,)):
-        type_str = "image"
+#  Waiting on reimplementation in new version of lume-model
+#    elif isinstance(variable, (ArrayVariable,)):
+#        type_str = "array"
 
-    elif isinstance(variable, (TableVariable,)):
-        type_str = "table"
+#    elif isinstance(variable, (ImageVariable,)):
+#        type_str = "image"
+
+#    elif isinstance(variable, (TableVariable,)):
+#        type_str = "table"
 
     else:
         raise ValueError("Variable type not found: %s", variable.__name__)
@@ -56,8 +57,7 @@ class LUMEModelVariableProcessor():
         self.output_variables = None
 
         try:
-            with open(filename, "r") as f:
-                self.input_variables, self.output_variables = variables_from_yaml(f)
+            self.input_variables, self.output_variables = variables_from_yaml(filename)
 
         except Exception as e:
             logger.exception(e)
@@ -67,16 +67,16 @@ class LUMEModelVariableProcessor():
         input_table = None
         output_table=None
 
-        input_var_matrix = [[var.name, get_var_type(var), var.default] for var in self.input_variables.values()]
+        input_var_matrix = [[var.name, get_var_type(var), var.default] for var in self.input_variables]
 
         if len(self.input_variables) > 0:
 
             if len(self.input_variables) == 1:
-                var = list(self.input_variables.values())[0]
+                var = list(self.input_variables)[0]
                 output_var_matrix = [var.name, get_var_type(var), var.default]
             
             else:
-                output_var_matrix = [[var.name, get_var_type(var), var.default] for var in self.input_variables.values()]
+                output_var_matrix = [[var.name, get_var_type(var), var.default] for var in self.input_variables]
 
 
             input_variable_table_writer =  MarkdownTableWriter(
@@ -90,11 +90,11 @@ class LUMEModelVariableProcessor():
         if len(self.output_variables) > 0:
 
             if len(self.output_variables) == 1:
-                var = list(self.output_variables.values())[0]
+                var = list(self.output_variables)[0]
                 output_var_matrix = [var.name, get_var_type(var)]
             
             else:
-                output_var_matrix = [[var.name, get_var_type(var)] for var in self.output_variables.values()]
+                output_var_matrix = [[var.name, get_var_type(var)] for var in self.output_variables]
 
 
             output_variable_table_writer =  MarkdownTableWriter(
