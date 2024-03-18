@@ -9,5 +9,6 @@
     "model_class":"{{ cookiecutter.project_name.title().replace(' ', '').replace('-', '') }}",
     "container_registry": ["DockerHub", "Stanford Container Registry"],
     "registry_username": null,
-    "model_config_file": null
+    "model_config_file": null,
+    "_copy_without_render": ["prefect.yaml"]
 }
