@@ -6,8 +6,9 @@ dependencies:
   - python=3.9
   - cookiecutter
   - versioneer
-  - lume-model
   - pytablewriter
   - gitpython
   - jupyterlab
   - tree
+  - pip:
+    - git+https://github.com/slaclab/lume-model.git  # Until lume-model updated in conda-forge
