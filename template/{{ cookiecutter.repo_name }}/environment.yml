@@ -6,4 +6,4 @@ dependencies:
   - lume-model # until lume-services registered with conda
   - pip 
   - pip: 
-    - git+https://github.com/slaclab/lume-services.git@main
+    - git+https://github.com/jbellister-slac/lume-services.git@prefect_2
