@@ -1,0 +1,49 @@
+# Generic metadata about this project
+name: flows
+prefect-version: 2.14.2
+
+# build section allows you to manage and build docker images
+build:
+- prefect_docker.deployments.steps.build_docker_image:
+    id: build-image
+    requires: prefect-docker>=0.4.0
+    image_name: {% raw %}'{{ $PREFECT_IMAGE_NAME }}'{% endraw %}
+    tag: latest
+    dockerfile: Dockerfile
+    platform: linux/amd64
+
+# push section allows you to manage if and how this project is uploaded to remote locations
+push:
+- prefect_docker.deployments.steps.push_docker_image:
+    requires: prefect-docker>=0.4.0
+    image_name: {% raw %}'{{ build-image.image_name }}'{% endraw %}
+    tag: {% raw %}'{{ build-image.tag }}'{% endraw %}
+
+pull:
+- prefect.deployments.steps.set_working_directory:
+    directory: {% raw %}/{{ cookiecutter.repo_name }}{% endraw %}
+
+# the definitions section allows you to define reusable components for your deployments
+definitions:
+  tags:
+  - lume
+  work_pool:
+    name: kubernetes-work-pool
+    job_variables:
+      image: {% raw %}'{{ build-image.image }}'{% endraw %}
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+- name: default
+  tags:
+  - lume
+  schedule:
+  work_pool:
+    name: kubernetes-work-pool
+    job_variables:
+      image: {% raw %}'{{ build-image.image }}'{% endraw %}
+    work_queue_name:
+  version:
+  description:
+  entrypoint: {{ cookiecutter.package }}/flow.py:{{ cookiecutter.package }}_flow
+  parameters: {}

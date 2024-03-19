@@ -4,10 +4,12 @@ channels:
   - conda-forge
 dependencies:
   - python=3.9
+  - pip
   - cookiecutter
   - versioneer
-  - lume-model
   - pytablewriter
   - gitpython
   - jupyterlab
   - tree
+  - pip:
+    - git+https://github.com/slaclab/lume-model.git  # Until lume-model updated in conda-forge

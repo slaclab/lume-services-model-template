@@ -1,7 +1,6 @@
 from typing import Dict
 
-from prefect import Flow, task, case
-from prefect import Parameter
+from prefect import flow, get_run_logger, task
 
 from lume_services.results import Result
 from lume_services.tasks import (
@@ -15,13 +14,12 @@ from lume_services.tasks import (
 )
 from lume_services.files import TextFile
 from lume_model.variables import InputVariable, OutputVariable
-from prefect.storage import Module
 
 from {{ cookiecutter.package }}.model import {{ cookiecutter.model_class }}
 from {{ cookiecutter.package }} import INPUT_VARIABLES
 
 
-@task(log_stdout=True)
+@task()
 def preprocessing_task(input_variables, misc_settings):
     """If additional preprocessing of input variables are required, process the
     variables here. This task is flexible and can absorb other misc settings passed
@@ -33,7 +31,6 @@ def preprocessing_task(input_variables, misc_settings):
 
         ```python
 
-        @task(log_stdout=True)
         def preprocessing_task(input_variables, multiplier):
             for var_name in input_variables.keys():
                 input_variables[var_name].value = input_variables[var_name].value
@@ -45,7 +42,7 @@ def preprocessing_task(input_variables, misc_settings):
     raise NotImplementedError("Called not implemented preprocessing_task in flow.")
 
 
-@task(log_stdout=True)
+@task()
 def format_file(output_variables):
     """Task used for organizing an file object. The formatted object must be
     serializable by the file_type passed in the SaveFile task call.
@@ -57,7 +54,7 @@ def format_file(output_variables):
         concatenate the text and save in a text file. This would look like:
         ```python
 
-        @task(log_stdout=True)
+        @task()
         def format_file(output_variables):
             text = output_variables["text1"].value + output_variables["text2"].value
             return text
@@ -87,7 +84,7 @@ def format_file(output_variables):
     raise NotImplementedError("Called not implemented format_file in flow.")
 
 
-@task(log_stdout=True)
+@task()
 def format_result(
     input_variables: Dict[str, InputVariable],
     output_variables: Dict[str, OutputVariable],
@@ -117,7 +114,17 @@ def format_result(
     return Result(inputs=inputs, outputs=outputs)
 
 
-@task(log_stdout=True)
+@task()
+def load_input(var_name, parameter):
+    # Confirm Inputs are Correctly Loaded!
+    logger = get_run_logger()
+    if parameter.value is None:
+        parameter.value = parameter.default
+    logger.info(f'Loaded {var_name} with value {parameter}')
+    return parameter
+
+
+@task()
 def evaluate(formatted_input_vars, settings=None):
 
     if settings is None:
@@ -145,27 +152,24 @@ save_file_task = SaveFile(timeout=30)
 # load_db_result_task = LoadDBResult(timeout=10)
 
 
-with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
-
+def {{ cookiecutter.package }}_flow():
+    logger = get_run_logger()
+    logger.info(f'Starting flow run...')
     # CONFIGURE LUME-SERVICES
     # see https://slaclab.github.io/lume-services/workflows/#configuring-flows-for-use-with-lume-services
-    configure = configure_lume_services()
+    #configure = configure_lume_services()
 
     # CHECK WHETHER THE FLOW IS RUNNING LOCALLY
     # If the flow runs using a local backend, the results service will not be available
-    running_local = check_local_execution()
-    running_local.set_upstream(configure)
+    #running_local = check_local_execution()
+    #running_local.set_upstream(configure)
 
     # SET UP INPUT VARIABLE PARAMETERS.
     # These are parameters that can be supplied to the workflow at runtime
-    input_variable_parameter_dict = {
-        var_name: Parameter(var_name, default=var.default)
-        for var_name, var in INPUT_VARIABLES.items()
-    }
+    input_variable_parameter_dict = {}
+    for var in INPUT_VARIABLES:
+        input_variable_parameter_dict[var.name] = load_input(var.name, var)
 
-    # additional settings may be organized as parameters
-    # setting_1 = Parameter("setting_1")
-    # setting_2 = Parameter("setting_2")
 
     # If your model requires loading a file object, you can use the LoadFile task
     # pre-packaged with LUME-services. The load_file_task is defined in a comment above
@@ -208,7 +212,7 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
     # This assumes the output is a text file, but see https://slaclab.github.io/lume-services/api/files/files/ # noqa
     # for custom types. If the formats supported do not suit your needs, you can
     # alternatively subclass File for custom serialization.
-    file_data = format_file(output_variables)
+    #file_data = format_file(output_variables)
 
 
     # MARK CONFIGURATION OF LUME_SERVICES AS AN UPSTREAM TASK
@@ -216,26 +220,26 @@ with Flow("{{ cookiecutter.repo_name }}", storage=Module(__name__)) as flow:
     # as an upstream task
 
     # add "filename" and "filesystem_identifier to the flow parameters"
-    file_parameters = save_file_task.parameters
-    saved_file_rep = save_file_task(file_data, file_type=TextFile, **file_parameters)
+    #file_parameters = save_file_task.parameters
+    #saved_file_rep = save_file_task(file_data, file_type=TextFile, **file_parameters)
 
 
     # MARK CONFIGURATION OF LUME_SERVICES AS AN UPSTREAM TASK
     # tasks using backend services like filesystem and results db must mark configure
     # as an upstream task
-    saved_file_rep.set_upstream(configure)
+    #saved_file_rep.set_upstream(configure)
 
 
-    # SAVE RESULTS TO RESULTS DATABASE, requires LUME-services results backend 
-    with case(running_local, False):
-        # CREATE LUME-services Result object
-        formatted_result = format_result(
-            input_variables=formatted_input_variables, output_variables=output_variables
-        )
+    # SAVE RESULTS TO RESULTS DATABASE, requires LUME-services results backend, still work in progress
+    #if not running_local:
+    #    # CREATE LUME-services Result object
+    #    formatted_result = format_result(
+    #        input_variables=formatted_input_variables, output_variables=output_variables
+    #    )
 
         # RUN DATABASE_SAVE_TASK
-        saved_model_rep = save_db_result_task(formatted_result)
-        saved_model_rep.set_upstream(configure)
+    #    saved_model_rep = save_db_result_task(formatted_result)
+    #    saved_model_rep.set_upstream(configure)
 
 
 def get_flow():
