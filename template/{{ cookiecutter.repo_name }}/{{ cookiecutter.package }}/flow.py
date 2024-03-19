@@ -152,7 +152,7 @@ save_file_task = SaveFile(timeout=30)
 # load_db_result_task = LoadDBResult(timeout=10)
 
 
-def {{ cookiecutter.repo_name  }}_flow():
+def {{ cookiecutter.package }}_flow():
     logger = get_run_logger()
     logger.info(f'Starting flow run...')
     # CONFIGURE LUME-SERVICES

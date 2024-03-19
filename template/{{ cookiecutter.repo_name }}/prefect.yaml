@@ -7,7 +7,7 @@ build:
 - prefect_docker.deployments.steps.build_docker_image:
     id: build-image
     requires: prefect-docker>=0.4.0
-    image_name: '{{ $PREFECT_IMAGE_NAME }}'
+    image_name: {% raw %}'{{ $PREFECT_IMAGE_NAME }}'{% endraw %}
     tag: latest
     dockerfile: Dockerfile
     platform: linux/amd64
@@ -16,12 +16,12 @@ build:
 push:
 - prefect_docker.deployments.steps.push_docker_image:
     requires: prefect-docker>=0.4.0
-    image_name: '{{ build-image.image_name }}'
-    tag: '{{ build-image.tag }}'
+    image_name: {% raw %}'{{ build-image.image_name }}'{% endraw %}
+    tag: {% raw %}'{{ build-image.tag }}'{% endraw %}
 
 pull:
 - prefect.deployments.steps.set_working_directory:
-    directory: /{{ cookiecutter.repo_name }}
+    directory: {% raw %}/{{ cookiecutter.repo_name }}{% endraw %}
 
 # the definitions section allows you to define reusable components for your deployments
 definitions:
@@ -30,7 +30,7 @@ definitions:
   work_pool:
     name: kubernetes-work-pool
     job_variables:
-      image: '{{ build-image.image }}'
+      image: {% raw %}'{{ build-image.image }}'{% endraw %}
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
@@ -41,9 +41,9 @@ deployments:
   work_pool:
     name: kubernetes-work-pool
     job_variables:
-      image: '{{ build-image.image }}'
+      image: {% raw %}'{{ build-image.image }}'{% endraw %}
     work_queue_name:
   version:
   description:
-  entrypoint: torch_model/flow.py:torch_nn_flow
+  entrypoint: {{ cookiecutter.package }}/flow.py:{{ cookiecutter.package }}_flow
   parameters: {}
