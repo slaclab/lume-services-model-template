@@ -1,4 +1,5 @@
 import copy
+from pydantic import SerializeAsAny
 from typing import Dict
 from lume_model.base import LUMEBaseModel
 from lume_model.variables import InputVariable, OutputVariable
@@ -8,8 +9,8 @@ from {{ cookiecutter.package }} import INPUT_VARIABLES, OUTPUT_VARIABLES
 
 
 class {{ cookiecutter.model_class }}(LUMEBaseModel):
-    input_variables = copy.deepcopy(INPUT_VARIABLES)
-    output_variables = copy.deepcopy(OUTPUT_VARIABLES)
+    input_variables:  list[SerializeAsAny[InputVariable]] = copy.deepcopy(INPUT_VARIABLES)
+    output_variables: list[SerializeAsAny[OutputVariable]] = copy.deepcopy(OUTPUT_VARIABLES)
 
     def __init__(self, **settings_kwargs):
         """Initialize the model. If additional settings are required, they can be 
