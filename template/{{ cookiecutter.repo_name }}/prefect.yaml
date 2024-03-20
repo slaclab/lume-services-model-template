@@ -21,7 +21,7 @@ push:
 
 pull:
 - prefect.deployments.steps.set_working_directory:
-    directory: {% raw %}/{{ cookiecutter.repo_name }}{% endraw %}
+    directory: /{{ cookiecutter.repo_name }}
 
 # the definitions section allows you to define reusable components for your deployments
 definitions:
