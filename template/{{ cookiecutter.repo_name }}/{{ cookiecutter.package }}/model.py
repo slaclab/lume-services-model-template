@@ -1,13 +1,13 @@
 import copy
 from typing import Dict
-from lume_model.models import BaseModel
+from lume_model.base import LUMEBaseModel
 from lume_model.variables import InputVariable, OutputVariable
 
 from {{ cookiecutter.package }} import INPUT_VARIABLES, OUTPUT_VARIABLES
 
 
 
-class {{ cookiecutter.model_class }}(BaseModel):
+class {{ cookiecutter.model_class }}(LUMEBaseModel):
     input_variables = copy.deepcopy(INPUT_VARIABLES)
     output_variables = copy.deepcopy(OUTPUT_VARIABLES)
 
