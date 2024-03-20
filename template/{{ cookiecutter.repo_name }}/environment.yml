@@ -2,6 +2,7 @@ name: {{ cookiecutter.repo_name }}
 channels:
   - conda-forge
 dependencies:
+  - python>=3.9,<3.12
   - prefect # until lume-services registered with conda
   - pip 
   - pip: 
