@@ -5,6 +5,7 @@ dependencies:
   - click
   - pydantic # until lume-services registered with conda
   - graphviz
+  - python>=3.9,<3.12
   - python-graphviz
   - prefect
   - pip 
